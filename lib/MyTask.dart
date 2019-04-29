@@ -1,5 +1,6 @@
 import 'package:firebasecurd/AddTask.dart';
 import 'package:firebasecurd/EditTask.dart';
+import 'package:firebasecurd/ShowDetail.dart';
 
 import 'package:firebasecurd/main.dart';
 import 'package:flutter/material.dart';
@@ -128,6 +129,8 @@ class _MyTaskState extends State<MyTask> {
                 boxShadow: [
                   new BoxShadow(color: Colors.black, blurRadius: 8.0)
                 ]),
+
+
             child: Column(
               children: <Widget>[
                 new SizedBox(
@@ -233,47 +236,72 @@ class TaskList extends StatelessWidget {
               new SnackBar(content: new Text("Data Deleted"))
             );
           },
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(title),
-                          Row(
-                            children: <Widget>[
-
-                              Icon(Icons.date_range),
-                              Expanded(child: Text(duedate)),
-                            ],
-                          ),
-                          Row(
+          child: InkWell(
+            onTap: (){
+                Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context)=>ShowDetail(title,duedate,note)));
+            },
+            child: Card(
+              elevation: 5,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Container(
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Icon(Icons.note),
-                              Expanded(child: Text(note)),
+                              Padding(
+                                padding: const EdgeInsets.only(left:150),
+                                child: Text(title,style: new TextStyle(color: Colors.black,letterSpacing: 1.0,fontSize: 20,fontFamily: "Helvetica",),),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.only(left:5.0),
+                                      child: Icon(Icons.date_range),
+                                    ),
+                                    Expanded(child: Text(duedate)),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 5),
+                                      child: Icon(Icons.note),
+                                    ),
+                                    Expanded(child: Text(note)),
+                                  ],
+                                ),
+                              ),
+
                             ],
                           ),
-
-                        ],
                       ),
-                  ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.only(left:8.0,right: 5),
+                      child: InkWell(
+
+                        child: Icon(Icons.edit),
+
+                        onTap: (){
+                          Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context)=>EditTask(title: title,duedate: documents[i].data["duedate"].toDate(),note: note,index: documents[i].reference,)));
+                        },
+
+                      ),
+                    )
+
+                  ],
                 ),
-
-                InkWell(
-
-                  child: Icon(Icons.edit),
-
-                  onTap: (){
-                    Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context)=>EditTask(title: title,duedate: documents[i].data["duedate"].toDate(),note: note,index: documents[i].reference,)));
-                  },
-
-                )
-
-              ],
+              ),
             ),
           ),
         );
